@@ -1,0 +1,67 @@
+﻿<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="cssjs/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <title>Lotterij Scratch Card Promotion</title>
+</head>
+<body>
+
+<div id="app" >
+    <div class="d-flex flex-wrap button">
+        <div class="card shadow" style="width: 8rem; margin: 10px" v-for="card in cards" v-bind:key="card.id">
+            <img class="card-img-top" src="img/scratch.jpg" height="100" alt="Card image cap">            
+            <div class="card-body" v-if="!card.scratched">                
+                <a href="#" @click="scratchCard(card)" class="btn btn-primary shadow card-btn">Scratch</a>
+            </div>
+            <div class="card-body" v-if="card.scratched">
+                <a href="#" class="btn disabled card-btn">Scratched</a>
+            </div>
+        </div>        
+    </div>
+</div>
+
+
+<script type="module">
+    import { createApp, ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+    //const API_URL = "https://localhost:55334/";
+    const API_URL = "https://ntkdnan81b.execute-api.us-east-1.amazonaws.com/Prod/";    
+
+    createApp({
+        data() {
+            return {
+                title:"Lotterij Scratch Card Promotion",
+                cards:[],
+            }
+        }, methods:{
+            async refreshData(){
+                axios.get(API_URL+'api/scratchcard/1')
+                    .then(response => (this.cards = response.data));
+            },
+            async scratchCard(card){
+                axios.post(API_URL+'api/scratchcard', {
+                    PromoId: 1,
+                    ScratchCardId: card.id
+                })
+                .then(function (response) {
+                    if (!response.data.success) {
+                        alert(response.data.message);
+                    } else {
+                        alert(response.data.scratchCard.reward);                      
+                    }
+                    refreshData();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },            
+        },mounted:function() {
+            this.refreshData();
+        }
+    }).mount('#app')
+</script>
+
+</body>
+</html>
