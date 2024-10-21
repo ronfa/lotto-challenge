@@ -22,9 +22,12 @@ public partial class PromoDbContext(DbContextOptions<PromoDbContext> options) : 
 
     private static List<ScratchCard> GenerateScratchCards()
     {
+        const int MaxCards = 10000;
+        const int MaxConsolations = 100;
+
         var list = new List<ScratchCard>();
 
-        Enumerable.Range(0, 100).ToList().ForEach(i => list.Add(
+        Enumerable.Range(0, MaxCards).ToList().ForEach(i => list.Add(
             new ScratchCard
             {
                 Name = $"Scratch {i + 1}",
@@ -34,14 +37,14 @@ public partial class PromoDbContext(DbContextOptions<PromoDbContext> options) : 
             }));
         
         // Set 1 random grand prize
-        var winner = new Random().Next(100);
+        var winner = new Random().Next(MaxCards);
         list[winner].Reward = "Congratulations!!! You won the game!!!";
         
-        // set 5 consolation prizes
+        // set 100 consolation prizes
         var prizes = new List<int>();
-        while (prizes.Count < 5)
+        while (prizes.Count < MaxConsolations)
         {
-            var result = new Random().Next(100);
+            var result = new Random().Next(MaxCards);
             if (prizes.Contains(result) || result == winner) 
                 continue;
             list[result].Reward = "You win a consolation prize!";
