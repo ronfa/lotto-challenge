@@ -1,9 +1,9 @@
-# Nederlandse Lotterij Coding Challenge
+# Coding Challenge - Scratch card promotion
 
 This is an example solution based on the following coding challenge:
 
 > ## Case Back-end Developer
-> NLO organizes a new promotional game. A website needs to be developed where visitors see a huge
+> A website needs to be developed where visitors see a huge
 > surprise calendar with 10000 scratchable areas. In one area there is the main prize of 25000 euros.
 > There are 100 consolation prizes hidden. A visitor of the website can only scratch open one area.
 > They can see which squares have already been opened by other users.

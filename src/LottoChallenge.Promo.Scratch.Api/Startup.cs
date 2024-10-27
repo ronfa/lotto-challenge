@@ -1,4 +1,5 @@
 ﻿using LottoChallenge.Promo.Scratch.Api.Extensions;
+using LottoChallenge.Promo.Scratch.Api.Middleware;
 using LottoChallenge.Promo.Scratch.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,6 +56,9 @@ public class Startup
             });
         
         app.UseHttpsRedirection();
+
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseRouting();
 

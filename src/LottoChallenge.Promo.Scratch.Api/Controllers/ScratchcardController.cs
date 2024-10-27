@@ -1,5 +1,6 @@
 ﻿using LottoChallenge.Promo.Scratch.Application.Requests;
 using LottoChallenge.Promo.Scratch.Application.Services;
+using LottoChallenge.Promo.Scratch.Domain.Errors;
 using LottoChallenge.Promo.Scratch.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,11 @@ public class ScratchcardController(
     [HttpGet("{promoId:int}")]
     public async Task<IActionResult> Get(int promoId, CancellationToken cancellationToken)
     {
+        if (promoId <= 0)
+        {
+            return Problem(detail: PromoErrors.NotFound(promoId).Description);
+        }
+
         var scratchCards = await repository.GetListAsync(promoId, cancellationToken);
         return Ok(scratchCards);
     }
